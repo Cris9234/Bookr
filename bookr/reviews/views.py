@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 
-from .models import Book
+from .models import Book, Publisher
 from .utils import average_rating
 
 
@@ -49,3 +49,11 @@ def book_detail(request, pk):
             "reviews": None
         }
     return render(request, "reviews/book_detail.html", context)
+
+
+def publisher_list(request):
+    publishers = Publisher.objects.all()
+    context = {
+        "publisher_list": publishers
+    }
+    return render(request, "reviews/publisher_list.html", context)

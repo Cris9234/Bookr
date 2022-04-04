@@ -1,0 +1,14 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+<ul class="list-group">
+    {% for publisher in publisher_list %}
+    <li class="list-group-item">
+        <span class="text-info">Name: </span><span class="badge badge-primary badge-pill">{{ publisher.name }}</span>
+        <br>
+        <span class="text-info">Website: </span><span>{{ publisher.website }}</span>
+        <br>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
