@@ -9,4 +9,5 @@ admin.site.register(Book)
 admin.site.register(BookContributor)
 admin.site.register(Review)
 
-
+class BookAdmin(admin.ModelAdmin):
+    list_display = ('title', 'isbn')
