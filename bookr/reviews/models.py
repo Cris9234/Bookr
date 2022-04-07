@@ -27,7 +27,7 @@ class Book(models.Model):
                                           through="BookContributor")
 
     def __str__(self):
-        return "{} ({})".format(self.title, self.isbn)
+        return self.title
 
 
 class Contributor(models.Model):
