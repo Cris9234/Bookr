@@ -29,6 +29,11 @@ class Book(models.Model):
     def __str__(self):
         return "{} ({})".format(self.title, self.isbn)
 
+    def isbn13(self):
+        return "{}-{}-{}-{}-{}".format(self.isbn[0:3], self.isbn[3:4],
+                                       self.isbn[4:6], self.isbn[6:12],
+                                       self.isbn[12:13])
+
 
 class Contributor(models.Model):
     """A contributor to a Book, e.g. author, editor, co-author."""
