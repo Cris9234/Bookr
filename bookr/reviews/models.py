@@ -27,7 +27,7 @@ class Book(models.Model):
                                           through="BookContributor")
 
     def __str__(self):
-        return self.title
+        return "{} ({})".format(self.title, self.isbn)
 
     def isbn13(self):
         return "{}-{}-{}-{}-{}".format(self.isbn[0:3], self.isbn[3:4],
@@ -43,8 +43,15 @@ class Contributor(models.Model):
                                   help_text="The contributor's last name or names.")
     email = models.EmailField(help_text="The contact email for the contributor.")
 
+    def initialled_name(self):
+        """ self.first_names='Jerome David', self.last_names='Salinger'
+            => 'Salinger, JD' """
+        initials = ''.join([name[0] for name
+                            in self.first_names.split(' ')])
+        return "{}, {}".format(self.last_names, initials)
+
     def __str__(self):
-        return self.first_names
+        return self.initialled_name()
 
 
 class BookContributor(models.Model):
@@ -58,6 +65,9 @@ class BookContributor(models.Model):
     role = models.CharField(verbose_name="The role this contributor had in the book.",
                             choices=ContributionRole.choices, max_length=20)
 
+    def __str__(self):
+        return "{} {} {}".format(self.contributor.initialled_name(), self.role, self.book.isbn)
+
 
 class Review(models.Model):
     content = models.TextField(help_text="The Review text.")
@@ -70,3 +80,6 @@ class Review(models.Model):
     creator = models.ForeignKey(auth.get_user_model(), on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE,
                              help_text="The Book that this review is for.")
+
+    def __str__(self):
+        return "{} - {}".format(self.creator.username, self.book.title)
