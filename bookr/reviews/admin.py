@@ -6,6 +6,7 @@ class BookAdmin(admin.ModelAdmin):
     date_hierarchy = 'publication_date'
     list_display = ('title', 'isbn13')
     list_filter = ('publisher', 'publication_date')
+    search_fields = ('title', 'isbn__exact', 'publisher__name')
 
 
 def initialled_name(obj):
@@ -13,10 +14,12 @@ def initialled_name(obj):
     return "{}, {}".format(obj.last_names, initials)
 
 
+class ReviewAdmin(admin.ModelAdmin):
+    exclude = 'date_edited'
+
+
 admin.site.register(Publisher)
 admin.site.register(Contributor)
 admin.site.register(Book, BookAdmin)
 admin.site.register(BookContributor)
 admin.site.register(Review)
-
-
