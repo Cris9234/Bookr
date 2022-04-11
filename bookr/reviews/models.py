@@ -46,9 +46,9 @@ class Contributor(models.Model):
     def initialled_name(self):
         """ self.first_names='Jerome David', self.last_names='Salinger'
             => 'Salinger, JD' """
-        initials = ''.join([name[0] for name
-                            in self.first_names.split(' ')])
+        initials = ''.join(name[0] for name in self.first_names.split(' '))
         return "{}, {}".format(self.last_names, initials)
+
 
     def __str__(self):
         return self.initialled_name()
