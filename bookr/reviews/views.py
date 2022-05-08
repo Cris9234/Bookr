@@ -6,7 +6,7 @@ from .forms import SearchForm
 
 
 def index(request):
-    return render(request, "base.html")
+    return render(request, "reviews/base.html")
 
 
 def book_search(request):
