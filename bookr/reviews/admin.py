@@ -24,5 +24,3 @@ admin.site.register(Contributor)
 admin.site.register(Book, BookAdmin)
 admin.site.register(BookContributor)
 admin.site.register(Review)
-
-
