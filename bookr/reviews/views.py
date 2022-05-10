@@ -10,12 +10,16 @@ def index(request):
 
 
 def book_search(request):
-    # Get the value of a GET variable with name 'search', and if it doesn't exist, return ""
+    # Get the value of a GET variable with name "search", and if it doesn't exist, return ""
     search_text = request.GET.get("search", "")
     form = SearchForm(request.GET)
+    # Create a set (no duplicate values) to store data
     books = set()
+    # is_valid(): validate and return a boolean designating whether the data was valid
+    # cleaned_data: normalize to a consistent format and takes the value of "search"
     if form.is_valid() and form.cleaned_data["search"]:
         search = form.cleaned_data["search"]
+        # use the get method since it might not exist as it's not required. "title" is the default value
         search_in = form.cleaned_data.get("search_in") or "title"
         if search_in == "title":
             books = Book.objects.filter(title__icontains=search)
