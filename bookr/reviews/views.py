@@ -3,10 +3,25 @@ from django.shortcuts import render, get_object_or_404
 from .models import Book, Publisher, Contributor
 from .utils import average_rating
 from .forms import SearchForm
+from .forms import OrderForm
 
 
 def index(request):
     return render(request, "reviews/base.html")
+
+
+def form_example(request):
+    initial = {"email": "user@example.com"}
+    if request.method == "POST":
+        form = OrderForm(request.POST, initial=initial)
+    else:
+        form = OrderForm(initial=initial)
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            for name, value in form.cleaned_data.items():
+                print("{}: ({}) {}".format(name, type(value), value))
+    return render(request, "reviews/form-example.html", {"method": request.method, "form": form})
 
 
 def book_search(request):
@@ -37,6 +52,7 @@ def book_search(request):
                 books.add(book)
 
     return render(request, "reviews/search-results.html", {"form": form, "search_text": search_text, "books": books})
+
 
 def book_list(request):
     books = Book.objects.all()
