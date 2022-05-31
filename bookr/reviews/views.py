@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
-
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from .models import Book, Publisher, Contributor
 from .utils import average_rating
-from .forms import SearchForm
+from .forms import PublisherForm, SearchForm
 from .forms import OrderForm
 
 
@@ -21,7 +21,7 @@ def form_example(request):
         if form.is_valid():
             for name, value in form.cleaned_data.items():
                 print("{}: ({}) {}".format(name, type(value), value))
-    return render(request, "reviews/form-example.html", {"method": request.method, "form": form})
+    return render(request, "reviews/form-exampless.html", {"method": request.method, "form": form})
 
 
 def book_search(request):
@@ -98,3 +98,25 @@ def publisher_list(request):
         "publisher_list": publishers
     }
     return render(request, "reviews/publisher_list.html", context)
+
+
+def publisher_edit(request, pk=None):
+    if pk is not None:
+        publisher = get_object_or_404(Publisher, pk=pk)
+    else:
+        publisher = None
+
+    if request.method == "POST":
+        form = PublisherForm(request.POST, instance=publisher)
+        if form.is_valid():
+            updated_publisher = form.save()
+            if publisher is None:
+                messages.success(request, "Publisher \"{}\" was created.".format(updated_publisher))
+            else:
+                messages.success(request, "Publisher \"{}\" was updated.".format(updated_publisher))
+            return redirect("publisher_edit", updated_publisher.pk)
+    else:
+        form = PublisherForm(instance=publisher)
+    return render(request, "reviews/instance-form.html", {"form": form,
+                                                          "instance": publisher,
+                                                          "model_type": "Publisher"})

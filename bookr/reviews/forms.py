@@ -1,4 +1,5 @@
 from django import forms
+from .models import Publisher
 from django.core.exceptions import ValidationError
 
 
@@ -38,3 +39,9 @@ class OrderForm(forms.Form):
         item_total = cleaned_data.get("magazine_count", 0) + cleaned_data.get("book_count", 0)
         if item_total > 100:
             self.add_error(None, "The total number of items must be 100 or less.")
+
+
+class PublisherForm(forms.ModelForm):
+    class Meta:
+        model = Publisher
+        fields = "__all__"
